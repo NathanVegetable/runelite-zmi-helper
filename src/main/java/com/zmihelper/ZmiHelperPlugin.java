@@ -51,20 +51,11 @@ public class ZmiHelperPlugin extends Plugin
 	@Inject
 	private ZmiHelperAltarOverlay altarOverlay;
 
-	@Getter(AccessLevel.PACKAGE)
-	private int currentPrayer;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int currentRunEnergy;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean pouchNeedsRepair;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean runEnergyLow;
-
-	@Getter(AccessLevel.PACKAGE)
-	private GameObject chaosAltar;
+	int currentPrayer = 0;
+	int currentRunEnergy = 0;
+	boolean pouchNeedsRepair = false;
+	boolean runEnergyLow = false;
+	GameObject chaosAltar = null;
 
 	private boolean lastPouchState;
 	private boolean lastRunEnergyState;
@@ -120,7 +111,7 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.INV.getId())
+		if (event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -269,7 +260,7 @@ public class ZmiHelperPlugin extends Plugin
 			return;
 		}
 
-		ObjectComposition composition = client.getObjectComposition(gameObject.getId());
+		ObjectComposition composition = client.getObjectDefinition(gameObject.getId());
 		if (composition != null && "Chaos altar".equals(composition.getName()))
 		{
 			chaosAltar = gameObject;
