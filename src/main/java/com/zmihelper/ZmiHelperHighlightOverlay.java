@@ -62,21 +62,24 @@ class ZmiHelperHighlightOverlay extends Overlay
 		onTick();
 
 		// Render spell highlights (if enabled)
-		if (plugin.pouchNeedsRepair && config.highlightNpcContact())
+		if (plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.chaosAltar != null)
 		{
 			highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
 		}
 
 		if (plugin.runEnergyLow && config.highlightRunEnergySpell())
 		{
-			int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
-			if (spellbook == 2) // Lunar
+			if (!config.runEnergyRequireAltar() || plugin.chaosAltar != null)
 			{
-				highlightSpell(graphics, InterfaceID.MagicSpellbook.SPELLBOOK_SWAP);
-			}
-			else if (spellbook == 3) // Arceuus
-			{
-				highlightSpell(graphics, InterfaceID.MagicSpellbook.VILE_VIGOUR);
+				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
+				if (spellbook == 2) // Lunar
+				{
+					highlightSpell(graphics, InterfaceID.MagicSpellbook.SPELLBOOK_SWAP);
+				}
+				else if (spellbook == 3) // Arceuus
+				{
+					highlightSpell(graphics, InterfaceID.MagicSpellbook.VILE_VIGOUR);
+				}
 			}
 		}
 
