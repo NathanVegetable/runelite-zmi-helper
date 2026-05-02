@@ -125,13 +125,17 @@ public class ZmiHelperPlugin extends Plugin
 		{
 			int threshold = config.runEnergyThreshold() * 100;
 			boolean shouldAlert = currentRunEnergy < threshold;
+			runEnergyLow = shouldAlert;
 
 			if (shouldAlert && !lastRunEnergyState && !loginFlag)
 			{
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
+				lastRunEnergyState = true;
 			}
-			lastRunEnergyState = shouldAlert;
-			runEnergyLow = shouldAlert;
+			else if (!shouldAlert)
+			{
+				lastRunEnergyState = false;
+			}
 		}
 		else
 		{
@@ -201,8 +205,8 @@ public class ZmiHelperPlugin extends Plugin
 				if (!lastPouchState && !loginFlag)
 				{
 					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
+					lastPouchState = true;
 				}
-				lastPouchState = true;
 				pouchNeedsRepair = true;
 				return;
 			}
