@@ -10,14 +10,14 @@ import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
-class ZmiHelperTextOverlay extends OverlayPanel
+class ZmiHelperRunEnergyReminder extends OverlayPanel
 {
 	private final Client client;
 	private final ZmiHelperPlugin plugin;
 	private final ZmiHelperConfig config;
 
 	@Inject
-	private ZmiHelperTextOverlay(Client client, ZmiHelperPlugin plugin, ZmiHelperConfig config)
+	private ZmiHelperRunEnergyReminder(Client client, ZmiHelperPlugin plugin, ZmiHelperConfig config)
 	{
 		this.client = client;
 		this.plugin = plugin;
@@ -27,34 +27,13 @@ class ZmiHelperTextOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
+		if (!plugin.runEnergyLow || !config.enableRunEnergyTextReminder())
+		{
+			return null;
+		}
+
 		panelComponent.getChildren().clear();
 
-		if (plugin.pouchNeedsRepair && config.enablePouchTextReminder())
-		{
-			addPouchReminder();
-		}
-
-		if (plugin.runEnergyLow && config.enableRunEnergyTextReminder())
-		{
-			addRunEnergyReminder();
-		}
-
-		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
-		return panelComponent.render(graphics);
-	}
-
-	private void addPouchReminder()
-	{
-		String text = "Repair pouches — NPC Contact";
-		Color color = getTextColor(config.flashPouchReminder());
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(text)
-			.leftColor(color)
-			.build());
-	}
-
-	private void addRunEnergyReminder()
-	{
 		int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 		String spellName = spellbook == 2 ? "Spellbook Swap" : "Vile Vigour";
 		String text = "Low run energy — " + spellName;
@@ -63,6 +42,9 @@ class ZmiHelperTextOverlay extends OverlayPanel
 			.left(text)
 			.leftColor(color)
 			.build());
+
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		return panelComponent.render(graphics);
 	}
 
 	private Color getTextColor(boolean flashEnabled)

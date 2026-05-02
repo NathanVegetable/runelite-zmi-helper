@@ -46,7 +46,10 @@ public class ZmiHelperPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private ZmiHelperTextOverlay textOverlay;
+	private ZmiHelperPouchReminder pouchReminder;
+
+	@Inject
+	private ZmiHelperRunEnergyReminder runEnergyReminder;
 
 	@Inject
 	private ZmiHelperHighlightOverlay highlightOverlay;
@@ -69,7 +72,8 @@ public class ZmiHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(textOverlay);
+		overlayManager.add(pouchReminder);
+		overlayManager.add(runEnergyReminder);
 		overlayManager.add(highlightOverlay);
 		overlayManager.add(altarOverlay);
 		log.debug("ZMI Helper started!");
@@ -78,7 +82,8 @@ public class ZmiHelperPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(textOverlay);
+		overlayManager.remove(pouchReminder);
+		overlayManager.remove(runEnergyReminder);
 		overlayManager.remove(highlightOverlay);
 		overlayManager.remove(altarOverlay);
 		log.debug("ZMI Helper stopped!");
