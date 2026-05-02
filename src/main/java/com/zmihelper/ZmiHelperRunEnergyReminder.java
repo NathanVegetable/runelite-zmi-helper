@@ -32,6 +32,11 @@ class ZmiHelperRunEnergyReminder extends OverlayPanel
 			return null;
 		}
 
+		if (config.runEnergyRequireAltar() && plugin.chaosAltar == null)
+		{
+			return null;
+		}
+
 		panelComponent.getChildren().clear();
 
 		int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);

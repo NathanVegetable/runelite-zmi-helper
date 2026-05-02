@@ -127,6 +127,17 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "runEnergyRequireAltar",
+		name = "Require Altar Nearby",
+		description = "Only show run energy reminder when Chaos altar is nearby",
+		section = "runenergy"
+	)
+	default boolean runEnergyRequireAltar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "highlightRunEnergySpell",
 		name = "Highlight Run Energy Spell",
 		description = "Highlight the relevant spell (Spellbook Swap or Vile Vigour)",
