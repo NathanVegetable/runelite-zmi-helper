@@ -141,29 +141,17 @@ public class ZmiHelperPlugin extends Plugin
 				continue;
 			}
 
-			// Check if already degraded (has DEGRADE item ID)
-			if (isDegradedPouch(item.getId()))
-			{
-				if (!lastPouchState)
-				{
-					if (config.enablePouchNotification())
-					{
-						notifier.notify("Pouch degraded — repair with NPC Contact!");
-					}
-					lastPouchState = true;
-				}
-				pouchNeedsRepair = true;
-				return;
-			}
+			// Check if already degraded OR at 1 charge left before next degradation
+			boolean isDegraded = isDegradedPouch(item.getId());
+			boolean isAt1Charge = pouch.getDegradation != null && isPouchAt1Charge(pouch);
 
-			// Check if at 1 charge left before next degradation
-			if (pouch.getDegradation != null && isPouchAt1Charge(pouch))
+			if (isDegraded || isAt1Charge)
 			{
 				if (!lastPouchState)
 				{
 					if (config.enablePouchNotification())
 					{
-						notifier.notify("Pouch at 1 charge — prepare NPC Contact!");
+						notifier.notify("Pouch needs repair — cast NPC Contact!");
 					}
 					lastPouchState = true;
 				}
