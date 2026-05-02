@@ -66,6 +66,7 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastPouchState;
 	private boolean lastRunEnergyState;
 	private boolean lastPrayerState;
+	private boolean loginFlag = false;
 
 	private static final int CHAOS_ALTAR_ID = 34571;
 
@@ -76,6 +77,12 @@ public class ZmiHelperPlugin extends Plugin
 		overlayManager.add(runEnergyReminder);
 		overlayManager.add(highlightOverlay);
 		overlayManager.add(altarOverlay);
+
+		if (client.getGameState() == net.runelite.api.GameState.LOGGED_IN)
+		{
+			loginFlag = true;
+		}
+
 		log.debug("ZMI Helper started!");
 	}
 
@@ -90,6 +97,22 @@ public class ZmiHelperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(net.runelite.api.events.GameStateChanged event)
+	{
+		switch (event.getGameState())
+		{
+			case LOGGING_IN:
+			case HOPPING:
+			case CONNECTION_LOST:
+				loginFlag = true;
+				break;
+			case LOGGED_IN:
+				loginFlag = true;
+				break;
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		highlightOverlay.onTick();
@@ -101,7 +124,7 @@ public class ZmiHelperPlugin extends Plugin
 			int threshold = config.runEnergyThreshold() * 100;
 			boolean shouldAlert = currentRunEnergy < threshold;
 
-			if (shouldAlert && !lastRunEnergyState)
+			if (shouldAlert && !lastRunEnergyState && !loginFlag)
 			{
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
 			}
@@ -113,6 +136,8 @@ public class ZmiHelperPlugin extends Plugin
 			runEnergyLow = false;
 			lastRunEnergyState = false;
 		}
+
+		loginFlag = false;
 	}
 
 	@Subscribe
@@ -154,11 +179,11 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (isDegraded || isAt1Charge)
 			{
-				if (!lastPouchState)
+				if (!lastPouchState && !loginFlag)
 				{
 					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-					lastPouchState = true;
 				}
+				lastPouchState = true;
 				pouchNeedsRepair = true;
 				return;
 			}
