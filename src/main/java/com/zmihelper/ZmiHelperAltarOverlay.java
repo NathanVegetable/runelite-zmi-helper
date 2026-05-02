@@ -33,7 +33,7 @@ class ZmiHelperAltarOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.enablePrayerReminder() || plugin.chaosAltar == null)
+		if (plugin.chaosAltar == null)
 		{
 			return null;
 		}
@@ -41,13 +41,14 @@ class ZmiHelperAltarOverlay extends Overlay
 		boolean shouldHighlight = false;
 
 		// Scenario 1: Prayer is already low
-		if (config.prayerThreshold() > 0 && plugin.currentPrayer < config.prayerThreshold())
+		if (config.highlightAltarLowPrayer() && config.prayerThreshold() > 0
+			&& plugin.currentPrayer < config.prayerThreshold())
 		{
 			shouldHighlight = true;
 		}
 
 		// Scenario 2: Run energy is low (about to cast spell that drains prayer)
-		if (!shouldHighlight && plugin.runEnergyLow)
+		if (!shouldHighlight && config.highlightAltarLowRunEnergy() && plugin.runEnergyLow)
 		{
 			shouldHighlight = true;
 		}

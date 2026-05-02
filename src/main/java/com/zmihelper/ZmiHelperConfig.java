@@ -147,18 +147,18 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigSection(
 		name = "Prayer Altar Tracking",
-		description = "Settings for prayer altar reminders",
+		description = "Settings for Chaos altar highlighting",
 		position = 2
 	)
 	String prayerSection = "prayer";
 
 	@ConfigItem(
-		keyName = "enablePrayerReminder",
-		name = "Enable Prayer Altar Reminder",
-		description = "Highlight Chaos altar when nearby and prayer is low",
+		keyName = "highlightAltarLowPrayer",
+		name = "Highlight Altar When Prayer Low",
+		description = "Highlight Chaos altar when prayer drops below threshold",
 		section = "prayer"
 	)
-	default boolean enablePrayerReminder()
+	default boolean highlightAltarLowPrayer()
 	{
 		return true;
 	}
@@ -172,6 +172,17 @@ public interface ZmiHelperConfig extends Config
 	default int prayerThreshold()
 	{
 		return 20;
+	}
+
+	@ConfigItem(
+		keyName = "highlightAltarLowRunEnergy",
+		name = "Highlight Altar When Run Energy Low",
+		description = "Highlight Chaos altar when about to restore run energy (which drains prayer)",
+		section = "prayer"
+	)
+	default boolean highlightAltarLowRunEnergy()
+	{
+		return true;
 	}
 
 	@Alpha
