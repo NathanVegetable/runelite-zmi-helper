@@ -8,7 +8,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.GameObject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -47,14 +46,10 @@ class ZmiHelperAltarOverlay extends Overlay
 			shouldHighlight = true;
 		}
 
-		// Scenario 2: Run energy is low and we're on Arceuus (will cast Vile Vigour and drain prayer)
-		if (!shouldHighlight && config.runEnergyThreshold() > 0 && plugin.runEnergyLow)
+		// Scenario 2: Run energy is low (about to cast spell that drains prayer)
+		if (!shouldHighlight && plugin.runEnergyLow)
 		{
-			int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
-			if (spellbook == 3) // Arceuus spellbook
-			{
-				shouldHighlight = true;
-			}
+			shouldHighlight = true;
 		}
 
 		if (!shouldHighlight)
