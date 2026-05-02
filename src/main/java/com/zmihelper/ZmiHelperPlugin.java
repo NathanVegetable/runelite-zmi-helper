@@ -68,6 +68,7 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastRunEnergyState;
 	private boolean lastPrayerState;
 	private boolean loginFlag = false;
+	private boolean lastAltarVisible = false;
 
 	private static final int CHAOS_ALTAR_ID = 34571;
 
@@ -137,6 +138,23 @@ public class ZmiHelperPlugin extends Plugin
 			runEnergyLow = false;
 			lastRunEnergyState = false;
 		}
+
+		// Check if altar just became visible and notify if conditions are met
+		boolean altarCurrentlyVisible = chaosAltar != null;
+		if (!lastAltarVisible && altarCurrentlyVisible && !loginFlag)
+		{
+			if (pouchNeedsRepair && !lastPouchState)
+			{
+				notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
+				lastPouchState = true;
+			}
+			if (runEnergyLow && !lastRunEnergyState)
+			{
+				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
+				lastRunEnergyState = true;
+			}
+		}
+		lastAltarVisible = altarCurrentlyVisible;
 
 		loginFlag = false;
 	}
