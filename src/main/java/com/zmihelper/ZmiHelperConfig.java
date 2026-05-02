@@ -6,6 +6,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("zmihelper")
 public interface ZmiHelperConfig extends Config
@@ -40,14 +41,14 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enablePouchNotification",
-		name = "Enable Pouch Notification",
-		description = "Show OS notification when pouch is at 1 charge",
+		keyName = "pouchNotification",
+		name = "Pouch Notification",
+		description = "Notification when pouch needs repair",
 		section = "pouch"
 	)
-	default boolean enablePouchNotification()
+	default Notification pouchNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -102,14 +103,14 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableRunEnergyNotification",
-		name = "Enable Run Energy Notification",
-		description = "Show OS notification when run energy is below threshold",
+		keyName = "runEnergyNotification",
+		name = "Run Energy Notification",
+		description = "Notification when run energy is below threshold",
 		section = "runenergy"
 	)
-	default boolean enableRunEnergyNotification()
+	default Notification runEnergyNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

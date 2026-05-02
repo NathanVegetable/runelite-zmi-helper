@@ -93,10 +93,7 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (shouldAlert && !lastRunEnergyState)
 			{
-				if (config.enableRunEnergyNotification())
-				{
-					notifier.notify("Run energy low!");
-				}
+				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
 			}
 			lastRunEnergyState = shouldAlert;
 			runEnergyLow = shouldAlert;
@@ -149,10 +146,7 @@ public class ZmiHelperPlugin extends Plugin
 			{
 				if (!lastPouchState)
 				{
-					if (config.enablePouchNotification())
-					{
-						notifier.notify("Pouch needs repair — cast NPC Contact!");
-					}
+					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
 					lastPouchState = true;
 				}
 				pouchNeedsRepair = true;
