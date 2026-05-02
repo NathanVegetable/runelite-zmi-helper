@@ -29,7 +29,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 @Slf4j
 @PluginDescriptor(
-	name = "ZMI Helper"
+	name = "ZMI Helper",
+	tags = {"zmi", "ourania", "runecraft", "rc", "pouch"}
 )
 public class ZmiHelperPlugin extends Plugin
 {
