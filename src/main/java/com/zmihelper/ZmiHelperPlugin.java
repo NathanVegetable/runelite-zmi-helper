@@ -46,7 +46,10 @@ public class ZmiHelperPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private ZmiHelperWidgetOverlay widgetOverlay;
+	private ZmiHelperTextOverlay textOverlay;
+
+	@Inject
+	private ZmiHelperHighlightOverlay highlightOverlay;
 
 	@Inject
 	private ZmiHelperAltarOverlay altarOverlay;
@@ -66,7 +69,8 @@ public class ZmiHelperPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(widgetOverlay);
+		overlayManager.add(textOverlay);
+		overlayManager.add(highlightOverlay);
 		overlayManager.add(altarOverlay);
 		log.debug("ZMI Helper started!");
 	}
@@ -74,7 +78,8 @@ public class ZmiHelperPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(widgetOverlay);
+		overlayManager.remove(textOverlay);
+		overlayManager.remove(highlightOverlay);
 		overlayManager.remove(altarOverlay);
 		log.debug("ZMI Helper stopped!");
 	}
@@ -82,7 +87,7 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		widgetOverlay.onTick();
+		highlightOverlay.onTick();
 
 		currentRunEnergy = client.getEnergy();
 
