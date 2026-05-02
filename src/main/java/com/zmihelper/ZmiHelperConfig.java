@@ -7,6 +7,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Notification;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("zmihelper")
 public interface ZmiHelperConfig extends Config
@@ -113,10 +114,11 @@ public interface ZmiHelperConfig extends Config
 		return Notification.ON;
 	}
 
+	@Range(min = 0, max = 100)
 	@ConfigItem(
 		keyName = "runEnergyThreshold",
 		name = "Run Energy Threshold",
-		description = "Show reminder when run energy drops below this % (0 to disable)",
+		description = "Show reminder when run energy drops below this (0 to disable)",
 		section = "runenergy"
 	)
 	default int runEnergyThreshold()
@@ -164,10 +166,11 @@ public interface ZmiHelperConfig extends Config
 		return true;
 	}
 
+	@Range(min = 0, max = 99)
 	@ConfigItem(
 		keyName = "prayerThreshold",
 		name = "Prayer Threshold",
-		description = "Highlight altar when prayer is below this % (0 to disable)",
+		description = "Highlight altar when prayer is below this (0 to disable)",
 		section = "prayer"
 	)
 	default int prayerThreshold()
