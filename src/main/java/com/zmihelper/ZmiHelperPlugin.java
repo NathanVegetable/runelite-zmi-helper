@@ -71,12 +71,23 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastAltarVisible = true;
 	private int cachedPlayerPlane = -1;
 
+	// Upper ZMI region where the altar is located
+	// Observed bounds when running through: x=3013-3058, y=5579-5629
+	// Added 25 tile buffer in all directions for safety
 	private static final int UPPER_ZMI_REGION = 12119;
+	private static final int UPPER_ZMI_MIN_X = 2988;
+	private static final int UPPER_ZMI_MAX_X = 3083;
+	private static final int UPPER_ZMI_MIN_Y = 5554;
+	private static final int UPPER_ZMI_MAX_Y = 5654;
+
+	// Lower ZMI region near the bank
+	// Observed bounds when running through: x=2452-2469, y=3232-3249
+	// Added 25 tile buffer in all directions for safety
 	private static final int LOWER_ZMI_REGION = 9778;
-	private static final int LOWER_ZMI_MIN_X = 2440;
-	private static final int LOWER_ZMI_MAX_X = 2480;
-	private static final int LOWER_ZMI_MIN_Y = 3220;
-	private static final int LOWER_ZMI_MAX_Y = 3260;
+	private static final int LOWER_ZMI_MIN_X = 2427;
+	private static final int LOWER_ZMI_MAX_X = 2494;
+	private static final int LOWER_ZMI_MIN_Y = 3207;
+	private static final int LOWER_ZMI_MAX_Y = 3274;
 
 	@Override
 	protected void startUp() throws Exception
@@ -346,16 +357,17 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean isInZmiArea()
 	{
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		int x = client.getLocalPlayer().getWorldLocation().getX();
+		int y = client.getLocalPlayer().getWorldLocation().getY();
 
 		if (region == UPPER_ZMI_REGION)
 		{
-			return true;
+			return x >= UPPER_ZMI_MIN_X && x <= UPPER_ZMI_MAX_X
+				&& y >= UPPER_ZMI_MIN_Y && y <= UPPER_ZMI_MAX_Y;
 		}
 
 		if (region == LOWER_ZMI_REGION)
 		{
-			int x = client.getLocalPlayer().getWorldLocation().getX();
-			int y = client.getLocalPlayer().getWorldLocation().getY();
 			return x >= LOWER_ZMI_MIN_X && x <= LOWER_ZMI_MAX_X
 				&& y >= LOWER_ZMI_MIN_Y && y <= LOWER_ZMI_MAX_Y;
 		}
