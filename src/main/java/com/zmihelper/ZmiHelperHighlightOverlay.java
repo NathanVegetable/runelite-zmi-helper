@@ -24,7 +24,6 @@ class ZmiHelperHighlightOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 	private static final double DARKEN_FACTOR = 0.36;
-	private static final Color TEXT_COLOR = new Color(255, 255, 0);
 
 	private final Client client;
 	private final ZmiHelperPlugin plugin;
@@ -144,7 +143,8 @@ class ZmiHelperHighlightOverlay extends Overlay
 			(float) Duration.between(startOfLastTick, Instant.now()).toMillis() / PULSE_TIME,
 			1f);
 		double t = tickProgress * Math.PI;
-		return ColorUtil.colorLerp(TEXT_COLOR, darkenColor(TEXT_COLOR), Math.sin(t));
+		Color baseColor = config.highlightColor();
+		return ColorUtil.colorLerp(baseColor, darkenColor(baseColor), Math.sin(t));
 	}
 
 	private Color darkenColor(Color color)

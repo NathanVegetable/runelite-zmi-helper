@@ -160,9 +160,28 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigSection(
+		name = "Highlight Colors",
+		description = "Customize colors for spell highlights and altar",
+		position = 2
+	)
+	String highlightSection = "highlight";
+
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightColor",
+		name = "Spell & Altar Highlight Color",
+		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour) and Chaos altar",
+		section = "highlight"
+	)
+	default Color highlightColor()
+	{
+		return new Color(0, 255, 0, 100);
+	}
+
+	@ConfigSection(
 		name = "Prayer Altar Tracking",
 		description = "Settings for Chaos altar highlighting",
-		position = 2
+		position = 3
 	)
 	String prayerSection = "prayer";
 
@@ -200,15 +219,4 @@ public interface ZmiHelperConfig extends Config
 		return true;
 	}
 
-	@Alpha
-	@ConfigItem(
-		keyName = "altarHighlightColor",
-		name = "Altar Highlight Color",
-		description = "Color to highlight the Chaos altar",
-		section = "prayer"
-	)
-	default Color altarHighlightColor()
-	{
-		return new Color(255, 255, 0, 100);
-	}
 }

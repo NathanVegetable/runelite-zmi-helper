@@ -69,7 +69,7 @@ class ZmiHelperAltarOverlay extends Overlay
 			return;
 		}
 
-		Color borderColor = config.altarHighlightColor();
+		Color borderColor = config.highlightColor();
 		Color fillColor = new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), 50);
 		Stroke stroke = new BasicStroke(2);
 
