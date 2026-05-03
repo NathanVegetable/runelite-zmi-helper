@@ -53,6 +53,17 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "pouchRequireAltar",
+		name = "Only Remind At Altar",
+		description = "Only notify when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
+		section = "pouch"
+	)
+	default boolean pouchRequireAltar()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "highlightNpcContact",
 		name = "Highlight NPC Contact Spell & Spellbook Tab",
 		description = "Highlight the NPC Contact spell and spellbook tab if not open",

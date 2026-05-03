@@ -71,6 +71,7 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean prayerLowTracked;
 	private boolean suppressNextNotifications = false;
 	private boolean lastAltarVisible = true;
+	private boolean lastPouchNeedsRepair = false;
 	private int cachedPlayerPlane = -1;
 
 	// Lower ZMI region where the altar is located
@@ -203,15 +204,37 @@ public class ZmiHelperPlugin extends Plugin
 			runEnergyNotificationSent = false;
 		}
 
-		if (altarJustArrived && !suppressNextNotifications)
+		if (pouchNeedsRepair && !suppressNextNotifications)
 		{
-			if (pouchNeedsRepair && !pouchNotificationSent)
+			boolean pouchJustDegraded = !lastPouchNeedsRepair && pouchNeedsRepair;
+
+			if (!pouchNotificationSent)
 			{
-				notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-				pouchNotificationSent = true;
+				boolean shouldNotify = false;
+
+				if (config.pouchRequireAltar())
+				{
+					shouldNotify = altarJustArrived;
+				}
+				else
+				{
+					shouldNotify = pouchJustDegraded;
+				}
+
+				if (shouldNotify)
+				{
+					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
+					pouchNotificationSent = true;
+				}
 			}
 		}
+		else if (!pouchNeedsRepair)
+		{
+			pouchNotificationSent = false;
+		}
+
 		lastAltarVisible = altarCurrentlyVisible;
+		lastPouchNeedsRepair = pouchNeedsRepair;
 
 		suppressNextNotifications = false;
 	}
@@ -243,17 +266,11 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (isDegraded || isAt1Charge)
 			{
-				if (!pouchNotificationSent && isInLowerZmiArea() && !suppressNextNotifications)
-				{
-					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-					pouchNotificationSent = true;
-				}
 				pouchNeedsRepair = true;
 				return;
 			}
 		}
 
-		pouchNotificationSent = false;
 		pouchNeedsRepair = false;
 	}
 
