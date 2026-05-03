@@ -138,39 +138,9 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigSection(
-		name = "Highlight Colors",
-		description = "Customize colors for spell highlights and altar",
-		position = 2
-	)
-	String highlightSection = "highlight";
-
-	@Alpha
-	@ConfigItem(
-		keyName = "highlightColor",
-		name = "Spell & Altar Highlight Color",
-		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour, Ourania Teleport) and Chaos altar",
-		section = "highlight"
-	)
-	default Color highlightColor()
-	{
-		return new Color(0, 255, 0, 100);
-	}
-
-	@ConfigItem(
-		keyName = "highlightOuraniaTeleport",
-		name = "Highlight Ourania Teleport",
-		description = "Highlight Ourania Teleport spell and spellbook tab when ready to leave",
-		section = "highlight"
-	)
-	default boolean highlightOuraniaTeleport()
-	{
-		return true;
-	}
-
-	@ConfigSection(
 		name = "Prayer Altar Tracking",
 		description = "Settings for Chaos altar highlighting",
-		position = 3
+		position = 2
 	)
 	String prayerSection = "prayer";
 
@@ -206,6 +176,43 @@ public interface ZmiHelperConfig extends Config
 	default boolean highlightAltarLowRunEnergy()
 	{
 		return true;
+	}
+
+	@ConfigSection(
+		name = "Runecrafting Teleport",
+		description = "Settings for Ourania Teleport highlighting",
+		position = 3
+	)
+	String teleportSection = "teleport";
+
+	@ConfigItem(
+		keyName = "highlightOuraniaTeleport",
+		name = "Highlight Ourania Teleport",
+		description = "Highlight Ourania Teleport spell and spellbook tab when ready to leave",
+		section = "teleport"
+	)
+	default boolean highlightOuraniaTeleport()
+	{
+		return true;
+	}
+
+	@ConfigSection(
+		name = "Highlight Colors",
+		description = "Customize colors for spell highlights and altar",
+		position = 4
+	)
+	String highlightSection = "highlight";
+
+	@Alpha
+	@ConfigItem(
+		keyName = "highlightColor",
+		name = "Spell & Altar Highlight Color",
+		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour, Ourania Teleport) and Chaos altar",
+		section = "highlight"
+	)
+	default Color highlightColor()
+	{
+		return new Color(0, 255, 0, 255);
 	}
 
 }
