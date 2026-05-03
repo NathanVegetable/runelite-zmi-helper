@@ -59,10 +59,14 @@ class ZmiHelperHighlightOverlay extends Overlay
 	{
 		onTick();
 
-		boolean pouchHighlight = plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.isInUpperZmiArea();
-		if (pouchHighlight)
+		boolean pouchHighlight = false;
+		if (plugin.pouchNeedsRepair && config.highlightNpcContact())
 		{
-			highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
+			if (!config.pouchRequireAltar() || plugin.isInUpperZmiArea())
+			{
+				pouchHighlight = true;
+				highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
+			}
 		}
 
 		boolean runEnergyHighlight = false;
