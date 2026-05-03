@@ -131,6 +131,7 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (shouldAlert && !runEnergyNotificationSent && !suppressNextNotifications)
 			{
+				// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
 				runEnergyNotificationSent = true;
 			}
@@ -156,6 +157,7 @@ public class ZmiHelperPlugin extends Plugin
 			}
 			if (runEnergyLow && !runEnergyNotificationSent)
 			{
+				// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
 				runEnergyNotificationSent = true;
 			}
