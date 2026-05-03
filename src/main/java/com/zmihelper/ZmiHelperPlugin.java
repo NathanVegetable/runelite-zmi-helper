@@ -72,7 +72,6 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean suppressNextNotifications = false;
 	private boolean lastAltarVisible = true;
 	private boolean lastPouchNeedsRepair = false;
-	private int cachedPlayerPlane = -1;
 
 	// Lower ZMI region where the altar is located
 	// Observed bounds when running through: x=3013-3058, y=5579-5629
@@ -145,8 +144,6 @@ public class ZmiHelperPlugin extends Plugin
 			return;
 		}
 
-		cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
-
 		if (!isInZmiArea())
 		{
 			return;
@@ -162,7 +159,7 @@ public class ZmiHelperPlugin extends Plugin
 		nearRcAltar = computeNearRcAltar();
 		allEssenceGone = computeAllEssenceGone();
 
-		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
+		boolean altarCurrentlyVisible = isInUpperZmiArea();
 		boolean altarJustArrived = !lastAltarVisible && altarCurrentlyVisible;
 
 		if (config.runEnergyThreshold() > 0)
@@ -442,21 +439,6 @@ public class ZmiHelperPlugin extends Plugin
 		return isInLowerZmiArea() || isInUpperZmiArea();
 	}
 
-	boolean isAltarVisibleOnSamePlane()
-	{
-		if (chaosAltar == null)
-		{
-			return false;
-		}
-
-		int playerPlane = cachedPlayerPlane;
-		if (playerPlane == -1 && client.getLocalPlayer() != null)
-		{
-			playerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
-		}
-
-		return playerPlane == chaosAltar.getWorldLocation().getPlane();
-	}
 
 	private boolean computeNearRcAltar()
 	{
