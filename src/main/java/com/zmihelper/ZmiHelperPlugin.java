@@ -123,6 +123,9 @@ public class ZmiHelperPlugin extends Plugin
 
 		currentRunEnergy = client.getEnergy();
 
+		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
+		boolean altarJustArrived = !lastAltarVisible && altarCurrentlyVisible;
+
 		if (config.runEnergyThreshold() > 0)
 		{
 			int threshold = config.runEnergyThreshold() * 100;
@@ -131,9 +134,25 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (shouldAlert && !runEnergyNotificationSent && !suppressNextNotifications)
 			{
-				// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
-				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
-				runEnergyNotificationSent = true;
+				boolean shouldNotify = false;
+
+				if (config.runEnergyRequireAltar())
+				{
+					// Only notify when arriving at altar if energy is already low
+					shouldNotify = altarJustArrived;
+				}
+				else
+				{
+					// Notify when threshold is first crossed
+					shouldNotify = true;
+				}
+
+				if (shouldNotify)
+				{
+					// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
+					notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
+					runEnergyNotificationSent = true;
+				}
 			}
 			else if (!shouldAlert)
 			{
@@ -146,20 +165,12 @@ public class ZmiHelperPlugin extends Plugin
 			runEnergyNotificationSent = false;
 		}
 
-		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
-
-		if (!lastAltarVisible && altarCurrentlyVisible && !suppressNextNotifications)
+		if (altarJustArrived && !suppressNextNotifications)
 		{
 			if (pouchNeedsRepair && !pouchNotificationSent)
 			{
 				notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
 				pouchNotificationSent = true;
-			}
-			if (runEnergyLow && !runEnergyNotificationSent)
-			{
-				// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
-				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
-				runEnergyNotificationSent = true;
 			}
 		}
 		lastAltarVisible = altarCurrentlyVisible;
