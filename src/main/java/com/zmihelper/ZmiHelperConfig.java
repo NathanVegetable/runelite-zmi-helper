@@ -128,8 +128,8 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "runEnergyRequireAltar",
-		name = "Require Altar Visible",
-		description = "Only show run energy reminder when Chaos altar is visible",
+		name = "Only Remind At Altar",
+		description = "Only notify when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
 		section = "runenergy"
 	)
 	default boolean runEnergyRequireAltar()
