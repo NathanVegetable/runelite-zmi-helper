@@ -208,7 +208,7 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getContainerId() != InventoryID.INV)
+		if (!isInZmiArea() || event.getContainerId() != InventoryID.INV)
 		{
 			return;
 		}
@@ -308,22 +308,24 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onStatChanged(StatChanged event)
 	{
-		if (event.getSkill() == Skill.PRAYER)
+		if (!isInZmiArea() || event.getSkill() != Skill.PRAYER)
 		{
-			currentPrayer = event.getBoostedLevel();
+			return;
+		}
 
-			if (config.prayerThreshold() > 0)
+		currentPrayer = event.getBoostedLevel();
+
+		if (config.prayerThreshold() > 0)
+		{
+			boolean shouldAlert = currentPrayer < config.prayerThreshold();
+
+			if (shouldAlert && !prayerLowTracked)
 			{
-				boolean shouldAlert = currentPrayer < config.prayerThreshold();
-
-				if (shouldAlert && !prayerLowTracked)
-				{
-					prayerLowTracked = true;
-				}
-				else if (!shouldAlert && prayerLowTracked)
-				{
-					prayerLowTracked = false;
-				}
+				prayerLowTracked = true;
+			}
+			else if (!shouldAlert && prayerLowTracked)
+			{
+				prayerLowTracked = false;
 			}
 		}
 	}
@@ -331,6 +333,11 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
+		if (!isInZmiArea())
+		{
+			return;
+		}
+
 		GameObject gameObject = event.getGameObject();
 		if (gameObject == null)
 		{
@@ -347,6 +354,11 @@ public class ZmiHelperPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
+		if (!isInZmiArea())
+		{
+			return;
+		}
+
 		GameObject gameObject = event.getGameObject();
 		if (gameObject == chaosAltar)
 		{
