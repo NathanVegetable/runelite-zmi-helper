@@ -159,38 +159,23 @@ public class ZmiHelperPlugin extends Plugin
 		nearRcAltar = computeNearRcAltar();
 		allEssenceGone = computeAllEssenceGone();
 
-		boolean altarCurrentlyVisible = isInUpperZmiArea();
-		boolean altarJustArrived = !lastAltarVisible && altarCurrentlyVisible;
+		boolean inUpperArea = isInUpperZmiArea();
 
 		if (config.runEnergyThreshold() > 0)
 		{
 			int threshold = config.runEnergyThreshold() * 100;
-			boolean shouldAlert = currentRunEnergy < threshold;
-			runEnergyLow = shouldAlert;
+			runEnergyLow = currentRunEnergy < threshold;
 
-			if (shouldAlert && !runEnergyNotificationSent && !suppressNextNotifications)
+			boolean canNotifyRunEnergy = runEnergyLow && !suppressNextNotifications;
+			boolean meetsLocationRequirement = !config.runEnergyRequireAltar() || inUpperArea;
+
+			if (canNotifyRunEnergy && meetsLocationRequirement && !runEnergyNotificationSent)
 			{
-				boolean shouldNotify = false;
-
-				if (config.runEnergyRequireAltar())
-				{
-					// Only notify when arriving at altar if energy is already low
-					shouldNotify = altarJustArrived;
-				}
-				else
-				{
-					// Notify when threshold is first crossed
-					shouldNotify = true;
-				}
-
-				if (shouldNotify)
-				{
-					// Hardcoded to Vile Vigour because the intent is to swap to Arceuus and cast it
-					notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
-					runEnergyNotificationSent = true;
-				}
+				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
+				runEnergyNotificationSent = true;
 			}
-			else if (!shouldAlert)
+
+			if (!runEnergyLow || (config.runEnergyRequireAltar() && !inUpperArea))
 			{
 				runEnergyNotificationSent = false;
 			}
@@ -201,36 +186,28 @@ public class ZmiHelperPlugin extends Plugin
 			runEnergyNotificationSent = false;
 		}
 
-		if (pouchNeedsRepair && !suppressNextNotifications)
+		if (pouchNeedsRepair)
 		{
-			boolean pouchJustDegraded = !lastPouchNeedsRepair && pouchNeedsRepair;
+			boolean canNotifyPouch = pouchNeedsRepair && !suppressNextNotifications;
+			boolean meetsLocationRequirement = !config.pouchRequireAltar() || inUpperArea;
 
-			if (!pouchNotificationSent)
+			if (canNotifyPouch && meetsLocationRequirement && !pouchNotificationSent)
 			{
-				boolean shouldNotify = false;
+				notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
+				pouchNotificationSent = true;
+			}
 
-				if (config.pouchRequireAltar())
-				{
-					shouldNotify = altarJustArrived;
-				}
-				else
-				{
-					shouldNotify = pouchJustDegraded;
-				}
-
-				if (shouldNotify)
-				{
-					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-					pouchNotificationSent = true;
-				}
+			if (config.pouchRequireAltar() && !inUpperArea)
+			{
+				pouchNotificationSent = false;
 			}
 		}
-		else if (!pouchNeedsRepair)
+		else
 		{
 			pouchNotificationSent = false;
 		}
 
-		lastAltarVisible = altarCurrentlyVisible;
+		lastAltarVisible = inUpperArea;
 		lastPouchNeedsRepair = pouchNeedsRepair;
 
 		suppressNextNotifications = false;
