@@ -58,10 +58,8 @@ class ZmiHelperHighlightOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		// Update tick timing
 		onTick();
 
-		// Render spell highlights (if enabled)
 		if (plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.chaosAltar != null)
 		{
 			highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
@@ -72,18 +70,17 @@ class ZmiHelperHighlightOverlay extends Overlay
 			if (!config.runEnergyRequireAltar() || plugin.chaosAltar != null)
 			{
 				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
-				if (spellbook == 2) // Lunar
+				if (spellbook == 2)
 				{
 					highlightSpell(graphics, InterfaceID.MagicSpellbook.SPELLBOOK_SWAP);
 				}
-				else if (spellbook == 3) // Arceuus
+				else if (spellbook == 3)
 				{
 					highlightSpell(graphics, InterfaceID.MagicSpellbook.VILE_VIGOUR);
 				}
 			}
 		}
 
-		// Render spellbook tab highlights (if enabled and spellbook not open)
 		if ((plugin.pouchNeedsRepair && config.highlightSpellbookTabForPouch())
 			|| (plugin.runEnergyLow && config.highlightSpellbookTabForEnergy()))
 		{
@@ -120,16 +117,13 @@ class ZmiHelperHighlightOverlay extends Overlay
 
 	private void highlightSpellbookTab(Graphics2D graphics)
 	{
-		// Try fixed layout STONE6
 		Widget tab = client.getWidget(InterfaceID.Toplevel.STONE6);
 		if (tab == null || tab.isHidden())
 		{
-			// Try resizable layout STONE6
 			tab = client.getWidget(InterfaceID.ToplevelOsrsStretch.STONE6);
 		}
 		if (tab == null || tab.isHidden())
 		{
-			// Try bottom-line layout STONE6
 			tab = client.getWidget(InterfaceID.ToplevelPreEoc.STONE6);
 		}
 

@@ -40,14 +40,12 @@ class ZmiHelperAltarOverlay extends Overlay
 
 		boolean shouldHighlight = false;
 
-		// Scenario 1: Prayer is already low
 		if (config.highlightAltarLowPrayer() && config.prayerThreshold() > 0
 			&& plugin.currentPrayer < config.prayerThreshold())
 		{
 			shouldHighlight = true;
 		}
 
-		// Scenario 2: Run energy is low (about to cast spell that drains prayer)
 		if (!shouldHighlight && config.highlightAltarLowRunEnergy() && plugin.runEnergyLow)
 		{
 			shouldHighlight = true;
@@ -58,7 +56,6 @@ class ZmiHelperAltarOverlay extends Overlay
 			return null;
 		}
 
-		// Render altar hull
 		renderAltarHull(graphics, plugin.chaosAltar);
 
 		return null;

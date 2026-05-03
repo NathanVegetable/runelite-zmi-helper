@@ -120,7 +120,6 @@ public class ZmiHelperPlugin extends Plugin
 	{
 		highlightOverlay.onTick();
 
-		// Cache player plane for this tick
 		if (client.getLocalPlayer() != null)
 		{
 			cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
@@ -150,7 +149,6 @@ public class ZmiHelperPlugin extends Plugin
 			lastRunEnergyState = false;
 		}
 
-		// Check if altar just became visible and notify if conditions are met
 		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
 
 		if (!lastAltarVisible && altarCurrentlyVisible && !loginFlag)
@@ -204,7 +202,6 @@ public class ZmiHelperPlugin extends Plugin
 				continue;
 			}
 
-			// Check if already degraded OR at 1 charge left before next degradation
 			boolean isDegraded = isDegradedPouch(item.getId());
 			boolean isAt1Charge = pouch.getDegradation != null && isPouchAt1Charge(pouch);
 
@@ -220,7 +217,6 @@ public class ZmiHelperPlugin extends Plugin
 			}
 		}
 
-		// No degraded or critical pouch found
 		if (lastPouchState)
 		{
 			lastPouchState = false;
@@ -332,7 +328,6 @@ public class ZmiHelperPlugin extends Plugin
 			return false;
 		}
 
-		// Use cached player plane if available, otherwise look it up
 		int playerPlane = cachedPlayerPlane;
 		if (playerPlane == -1 && client.getLocalPlayer() != null)
 		{
