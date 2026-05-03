@@ -359,7 +359,7 @@ public class ZmiHelperPlugin extends Plugin
 		}
 	}
 
-	private boolean isInUpperZmiArea()
+	boolean isInUpperZmiArea()
 	{
 		if (client.getLocalPlayer() == null)
 		{

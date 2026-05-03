@@ -60,14 +60,14 @@ class ZmiHelperHighlightOverlay extends Overlay
 	{
 		onTick();
 
-		if (plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.chaosAltar != null)
+		if (plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.isInUpperZmiArea())
 		{
 			highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
 		}
 
 		if (plugin.runEnergyLow && config.highlightRunEnergySpell())
 		{
-			if (!config.runEnergyRequireAltar() || plugin.chaosAltar != null)
+			if (!config.runEnergyRequireAltar() || plugin.isInUpperZmiArea())
 			{
 				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 				if (spellbook == 2)
