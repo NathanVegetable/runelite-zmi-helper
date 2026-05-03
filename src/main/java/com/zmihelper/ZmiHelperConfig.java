@@ -54,22 +54,11 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightNpcContact",
-		name = "Highlight NPC Contact Spell",
-		description = "Highlight the NPC Contact spell in standard spellbook",
+		name = "Highlight NPC Contact Spell & Spellbook Tab",
+		description = "Highlight the NPC Contact spell and spellbook tab if not open",
 		section = "pouch"
 	)
 	default boolean highlightNpcContact()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "highlightSpellbookTabForPouch",
-		name = "Highlight Spellbook Tab",
-		description = "Highlight magic tab icon if spellbook is not open",
-		section = "pouch"
-	)
-	default boolean highlightSpellbookTabForPouch()
 	{
 		return true;
 	}
@@ -139,22 +128,11 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightRunEnergySpell",
-		name = "Highlight Run Energy Spell",
-		description = "Highlight the relevant spell (Spellbook Swap or Vile Vigour)",
+		name = "Highlight Run Energy Spell & Spellbook Tab",
+		description = "Highlight the relevant spell (Spellbook Swap or Vile Vigour) and spellbook tab if not open",
 		section = "runenergy"
 	)
 	default boolean highlightRunEnergySpell()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "highlightSpellbookTabForEnergy",
-		name = "Highlight Spellbook Tab",
-		description = "Highlight magic tab icon if spellbook is not open",
-		section = "runenergy"
-	)
-	default boolean highlightSpellbookTabForEnergy()
 	{
 		return true;
 	}
@@ -181,7 +159,7 @@ public interface ZmiHelperConfig extends Config
 	@ConfigItem(
 		keyName = "highlightOuraniaTeleport",
 		name = "Highlight Ourania Teleport",
-		description = "Highlight Ourania Teleport spell when ready to leave (inventory and pouches empty, near altar)",
+		description = "Highlight Ourania Teleport spell and spellbook tab when ready to leave",
 		section = "highlight"
 	)
 	default boolean highlightOuraniaTeleport()

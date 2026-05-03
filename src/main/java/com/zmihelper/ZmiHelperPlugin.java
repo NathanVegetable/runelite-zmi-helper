@@ -402,7 +402,7 @@ public class ZmiHelperPlugin extends Plugin
 			&& y >= UPPER_ZMI_MIN_Y && y <= UPPER_ZMI_MAX_Y;
 	}
 
-	private boolean isInLowerZmiArea()
+	boolean isInLowerZmiArea()
 	{
 		if (client.getLocalPlayer() == null)
 		{
@@ -462,18 +462,15 @@ public class ZmiHelperPlugin extends Plugin
 			return false;
 		}
 
-		// Check if inventory has any essence items
 		for (Item item : inventory.getItems())
 		{
-			if (item.getId() == ItemID.PURE_ESSENCE
-				|| item.getId() == ItemID.RUNE_ESSENCE
-				|| item.getId() == ItemID.DAEYALT_ESSENCE)
+			int id = item.getId();
+			if (id == ItemID.BLANKRUNE_HIGH || id == ItemID.BLANKRUNE_DAEYALT || id == ItemID.BLANKRUNE)
 			{
 				return false;
 			}
 		}
 
-		// Check if any pouch has essence
 		for (EssPouch pouch : EssPouch.values())
 		{
 			if (pouch.getAmount(client) > 0)

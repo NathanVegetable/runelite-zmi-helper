@@ -59,15 +59,18 @@ class ZmiHelperHighlightOverlay extends Overlay
 	{
 		onTick();
 
-		if (plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.isInUpperZmiArea())
+		boolean pouchHighlight = plugin.pouchNeedsRepair && config.highlightNpcContact() && plugin.isInUpperZmiArea();
+		if (pouchHighlight)
 		{
 			highlightSpell(graphics, InterfaceID.MagicSpellbook.NPC_CONTACT);
 		}
 
+		boolean runEnergyHighlight = false;
 		if (plugin.runEnergyLow && config.highlightRunEnergySpell())
 		{
 			if (!config.runEnergyRequireAltar() || plugin.isInLowerZmiArea())
 			{
+				runEnergyHighlight = true;
 				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 				if (spellbook == 2)
 				{
@@ -80,22 +83,20 @@ class ZmiHelperHighlightOverlay extends Overlay
 			}
 		}
 
+		boolean ouraniahighlight = false;
 		if (plugin.nearRcAltar && plugin.allEssenceGone && config.highlightOuraniaTeleport())
 		{
+			ouraniahighlight = true;
 			int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 			if (spellbook == 2)
 			{
-				highlightSpell(graphics, InterfaceID.LunarSpellbook.OURANIA_TELEPORT);
+				highlightSpell(graphics, InterfaceID.MagicSpellbook.OURANIA_TELEPORT);
 			}
 		}
 
-		if ((plugin.pouchNeedsRepair && config.highlightSpellbookTabForPouch())
-			|| (plugin.runEnergyLow && config.highlightSpellbookTabForEnergy()))
+		if ((pouchHighlight || runEnergyHighlight || ouraniahighlight) && !isSpellbookOpen())
 		{
-			if (!isSpellbookOpen())
-			{
-				highlightSpellbookTab(graphics);
-			}
+			highlightSpellbookTab(graphics);
 		}
 
 		return null;
