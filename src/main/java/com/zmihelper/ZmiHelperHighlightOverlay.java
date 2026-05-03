@@ -84,7 +84,7 @@ class ZmiHelperHighlightOverlay extends Overlay
 		}
 
 		boolean ouraniahighlight = false;
-		if (plugin.nearRcAltar && plugin.allEssenceGone && config.highlightOuraniaTeleport())
+		if (plugin.nearRcAltar && plugin.allEssenceGone && config.highlightOuraniaTeleport() && plugin.isInLowerZmiArea())
 		{
 			ouraniahighlight = true;
 			int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
