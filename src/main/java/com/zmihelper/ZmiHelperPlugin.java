@@ -68,7 +68,7 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastRunEnergyState;
 	private boolean lastPrayerState;
 	private boolean loginFlag = false;
-	private boolean lastAltarVisible = false;
+	private boolean lastAltarVisible = true;
 
 	private static final int CHAOS_ALTAR_ID = 34571;
 
@@ -144,7 +144,10 @@ public class ZmiHelperPlugin extends Plugin
 		}
 
 		// Check if altar just became visible and notify if conditions are met
-		boolean altarCurrentlyVisible = chaosAltar != null;
+		boolean altarCurrentlyVisible = chaosAltar != null &&
+			client.getLocalPlayer() != null &&
+			client.getLocalPlayer().getWorldLocation().getPlane() == chaosAltar.getWorldLocation().getPlane();
+
 		if (!lastAltarVisible && altarCurrentlyVisible && !loginFlag)
 		{
 			if (pouchNeedsRepair && !lastPouchState)
