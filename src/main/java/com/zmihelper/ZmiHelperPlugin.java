@@ -71,6 +71,13 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastAltarVisible = true;
 	private int cachedPlayerPlane = -1;
 
+	private static final int UPPER_ZMI_REGION = 12119;
+	private static final int LOWER_ZMI_REGION = 9778;
+	private static final int LOWER_ZMI_MIN_X = 2440;
+	private static final int LOWER_ZMI_MAX_X = 2480;
+	private static final int LOWER_ZMI_MIN_Y = 3220;
+	private static final int LOWER_ZMI_MAX_Y = 3260;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -116,13 +123,18 @@ public class ZmiHelperPlugin extends Plugin
 	{
 		highlightOverlay.onTick();
 
-		if (client.getLocalPlayer() != null)
+		if (client.getLocalPlayer() == null)
 		{
-			cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
-			int x = client.getLocalPlayer().getWorldLocation().getX();
-			int y = client.getLocalPlayer().getWorldLocation().getY();
-			int region = client.getLocalPlayer().getWorldLocation().getRegionID();
-			log.info("ZMI: x={}, y={}, region={}, plane={}", x, y, region, cachedPlayerPlane);
+			suppressNextNotifications = false;
+			return;
+		}
+
+		cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
+
+		if (!isInZmiArea())
+		{
+			suppressNextNotifications = false;
+			return;
 		}
 
 		currentRunEnergy = client.getEnergy();
@@ -329,6 +341,26 @@ public class ZmiHelperPlugin extends Plugin
 		{
 			chaosAltar = null;
 		}
+	}
+
+	private boolean isInZmiArea()
+	{
+		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+		if (region == UPPER_ZMI_REGION)
+		{
+			return true;
+		}
+
+		if (region == LOWER_ZMI_REGION)
+		{
+			int x = client.getLocalPlayer().getWorldLocation().getX();
+			int y = client.getLocalPlayer().getWorldLocation().getY();
+			return x >= LOWER_ZMI_MIN_X && x <= LOWER_ZMI_MAX_X
+				&& y >= LOWER_ZMI_MIN_Y && y <= LOWER_ZMI_MAX_Y;
+		}
+
+		return false;
 	}
 
 	boolean isAltarVisibleOnSamePlane()
