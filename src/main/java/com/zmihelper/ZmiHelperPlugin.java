@@ -340,7 +340,14 @@ public class ZmiHelperPlugin extends Plugin
 			playerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
 		}
 
-		return playerPlane == chaosAltar.getWorldLocation().getPlane();
+		int altarPlane = chaosAltar.getWorldLocation().getPlane();
+		boolean sameplane = playerPlane == altarPlane;
+		if (!sameplane)
+		{
+			log.info("Plane mismatch: player={}, altar={}", playerPlane, altarPlane);
+		}
+
+		return sameplane;
 	}
 
 	@Provides
