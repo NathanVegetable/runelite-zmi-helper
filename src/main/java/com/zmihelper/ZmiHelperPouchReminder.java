@@ -26,7 +26,7 @@ class ZmiHelperPouchReminder extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.pouchNeedsRepair || !config.enablePouchTextReminder())
+		if (!plugin.pouchNeedsRepair || !config.enablePouchTextReminder() || !plugin.isInUpperZmiArea())
 		{
 			return null;
 		}

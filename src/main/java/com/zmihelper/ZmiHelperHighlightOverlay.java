@@ -66,7 +66,7 @@ class ZmiHelperHighlightOverlay extends Overlay
 
 		if (plugin.runEnergyLow && config.highlightRunEnergySpell())
 		{
-			if (!config.runEnergyRequireAltar() || plugin.isInUpperZmiArea())
+			if (!config.runEnergyRequireAltar() || plugin.isInLowerZmiArea())
 			{
 				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 				if (spellbook == 2)
@@ -77,6 +77,15 @@ class ZmiHelperHighlightOverlay extends Overlay
 				{
 					highlightSpell(graphics, InterfaceID.MagicSpellbook.VILE_VIGOUR);
 				}
+			}
+		}
+
+		if (plugin.nearRcAltar && plugin.allEssenceGone && config.highlightOuraniaTeleport())
+		{
+			int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
+			if (spellbook == 2)
+			{
+				highlightSpell(graphics, InterfaceID.LunarSpellbook.OURANIA_TELEPORT);
 			}
 		}
 

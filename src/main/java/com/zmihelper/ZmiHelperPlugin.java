@@ -62,6 +62,9 @@ public class ZmiHelperPlugin extends Plugin
 	boolean pouchNeedsRepair = false;
 	boolean runEnergyLow = false;
 	GameObject chaosAltar = null;
+	GameObject rcAltar = null;
+	boolean nearRcAltar = false;
+	boolean allEssenceGone = false;
 
 	private boolean pouchNotificationSent;
 	private boolean runEnergyNotificationSent;
@@ -87,6 +90,9 @@ public class ZmiHelperPlugin extends Plugin
 	private static final int UPPER_ZMI_MAX_X = 2494;
 	private static final int UPPER_ZMI_MIN_Y = 3207;
 	private static final int UPPER_ZMI_MAX_Y = 3274;
+
+	private static final String CHAOS_ALTAR_NAME = "Chaos altar";
+	private static final String RUNECRAFT_ALTAR_NAME = "Altar";
 
 	@Override
 	protected void startUp() throws Exception
@@ -153,6 +159,9 @@ public class ZmiHelperPlugin extends Plugin
 		// since NPC Contact repairs update the pouch's degradation state without
 		// necessarily triggering a container change event
 		checkPouchState();
+
+		nearRcAltar = computeNearRcAltar();
+		allEssenceGone = computeAllEssenceGone();
 
 		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
 		boolean altarJustArrived = !lastAltarVisible && altarCurrentlyVisible;
@@ -338,9 +347,19 @@ public class ZmiHelperPlugin extends Plugin
 		}
 
 		ObjectComposition composition = client.getObjectDefinition(gameObject.getId());
-		if (composition != null && "Chaos altar".equals(composition.getName()))
+		if (composition == null)
+		{
+			return;
+		}
+
+		String name = composition.getName();
+		if (CHAOS_ALTAR_NAME.equals(name) && isInUpperZmiArea())
 		{
 			chaosAltar = gameObject;
+		}
+		else if (RUNECRAFT_ALTAR_NAME.equals(name) && isInLowerZmiArea())
+		{
+			rcAltar = gameObject;
 		}
 	}
 
@@ -356,6 +375,10 @@ public class ZmiHelperPlugin extends Plugin
 		if (gameObject == chaosAltar)
 		{
 			chaosAltar = null;
+		}
+		if (gameObject == rcAltar)
+		{
+			rcAltar = null;
 		}
 	}
 
@@ -401,7 +424,7 @@ public class ZmiHelperPlugin extends Plugin
 
 	private boolean isInZmiArea()
 	{
-		return isInLowerZmiArea() || isInLowerZmiArea();
+		return isInLowerZmiArea() || isInUpperZmiArea();
 	}
 
 	boolean isAltarVisibleOnSamePlane()
@@ -418,6 +441,48 @@ public class ZmiHelperPlugin extends Plugin
 		}
 
 		return playerPlane == chaosAltar.getWorldLocation().getPlane();
+	}
+
+	private boolean computeNearRcAltar()
+	{
+		if (rcAltar == null || client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
+		int distance = client.getLocalPlayer().getWorldLocation().distanceTo(rcAltar.getWorldLocation());
+		return distance <= 10;
+	}
+
+	private boolean computeAllEssenceGone()
+	{
+		ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+		if (inventory == null)
+		{
+			return false;
+		}
+
+		// Check if inventory has any essence items
+		for (Item item : inventory.getItems())
+		{
+			if (item.getId() == ItemID.PURE_ESSENCE
+				|| item.getId() == ItemID.RUNE_ESSENCE
+				|| item.getId() == ItemID.DAEYALT_ESSENCE)
+			{
+				return false;
+			}
+		}
+
+		// Check if any pouch has essence
+		for (EssPouch pouch : EssPouch.values())
+		{
+			if (pouch.getAmount(client) > 0)
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Provides

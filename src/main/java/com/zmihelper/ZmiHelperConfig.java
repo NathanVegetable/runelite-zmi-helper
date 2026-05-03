@@ -170,12 +170,23 @@ public interface ZmiHelperConfig extends Config
 	@ConfigItem(
 		keyName = "highlightColor",
 		name = "Spell & Altar Highlight Color",
-		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour) and Chaos altar",
+		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour, Ourania Teleport) and Chaos altar",
 		section = "highlight"
 	)
 	default Color highlightColor()
 	{
 		return new Color(0, 255, 0, 100);
+	}
+
+	@ConfigItem(
+		keyName = "highlightOuraniaTeleport",
+		name = "Highlight Ourania Teleport",
+		description = "Highlight Ourania Teleport spell when ready to leave (inventory and pouches empty, near altar)",
+		section = "highlight"
+	)
+	default boolean highlightOuraniaTeleport()
+	{
+		return true;
 	}
 
 	@ConfigSection(
