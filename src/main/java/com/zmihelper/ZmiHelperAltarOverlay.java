@@ -38,6 +38,13 @@ class ZmiHelperAltarOverlay extends Overlay
 			return null;
 		}
 
+		// Only highlight if on the same plane
+		if (client.getLocalPlayer() == null ||
+			client.getLocalPlayer().getWorldLocation().getPlane() != plugin.chaosAltar.getWorldLocation().getPlane())
+		{
+			return null;
+		}
+
 		boolean shouldHighlight = false;
 
 		// Scenario 1: Prayer is already low
