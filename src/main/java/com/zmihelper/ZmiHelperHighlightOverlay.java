@@ -68,7 +68,7 @@ class ZmiHelperHighlightOverlay extends Overlay
 		boolean runEnergyHighlight = false;
 		if (plugin.runEnergyLow && config.highlightRunEnergySpell())
 		{
-			if (!config.runEnergyRequireAltar() || plugin.isInLowerZmiArea())
+			if (!config.runEnergyRequireAltar() || plugin.isInUpperZmiArea())
 			{
 				runEnergyHighlight = true;
 				int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);

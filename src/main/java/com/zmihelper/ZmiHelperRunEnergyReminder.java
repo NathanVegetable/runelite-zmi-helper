@@ -32,7 +32,7 @@ class ZmiHelperRunEnergyReminder extends OverlayPanel
 			return null;
 		}
 
-		if (config.runEnergyRequireAltar() && !plugin.isInLowerZmiArea())
+		if (config.runEnergyRequireAltar() && !plugin.isInUpperZmiArea())
 		{
 			return null;
 		}

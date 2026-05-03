@@ -141,7 +141,6 @@ public class ZmiHelperPlugin extends Plugin
 
 		if (client.getLocalPlayer() == null)
 		{
-			suppressNextNotifications = false;
 			return;
 		}
 
@@ -149,7 +148,6 @@ public class ZmiHelperPlugin extends Plugin
 
 		if (!isInZmiArea())
 		{
-			suppressNextNotifications = false;
 			return;
 		}
 
