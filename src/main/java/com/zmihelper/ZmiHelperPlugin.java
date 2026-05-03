@@ -243,7 +243,7 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (isDegraded || isAt1Charge)
 			{
-				if (!pouchNotificationSent && !suppressNextNotifications)
+				if (!pouchNotificationSent && isInUpperZmiArea() && !suppressNextNotifications)
 				{
 					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
 					pouchNotificationSent = true;
@@ -366,25 +366,39 @@ public class ZmiHelperPlugin extends Plugin
 		}
 	}
 
-	private boolean isInZmiArea()
+	private boolean isInUpperZmiArea()
 	{
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (region != UPPER_ZMI_REGION)
+		{
+			return false;
+		}
+
 		int x = client.getLocalPlayer().getWorldLocation().getX();
 		int y = client.getLocalPlayer().getWorldLocation().getY();
 
-		if (region == UPPER_ZMI_REGION)
+		return x >= UPPER_ZMI_MIN_X && x <= UPPER_ZMI_MAX_X
+			&& y >= UPPER_ZMI_MIN_Y && y <= UPPER_ZMI_MAX_Y;
+	}
+
+	private boolean isInLowerZmiArea()
+	{
+		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+		if (region != LOWER_ZMI_REGION)
 		{
-			return x >= UPPER_ZMI_MIN_X && x <= UPPER_ZMI_MAX_X
-				&& y >= UPPER_ZMI_MIN_Y && y <= UPPER_ZMI_MAX_Y;
+			return false;
 		}
 
-		if (region == LOWER_ZMI_REGION)
-		{
-			return x >= LOWER_ZMI_MIN_X && x <= LOWER_ZMI_MAX_X
-				&& y >= LOWER_ZMI_MIN_Y && y <= LOWER_ZMI_MAX_Y;
-		}
+		int x = client.getLocalPlayer().getWorldLocation().getX();
+		int y = client.getLocalPlayer().getWorldLocation().getY();
 
-		return false;
+		return x >= LOWER_ZMI_MIN_X && x <= LOWER_ZMI_MAX_X
+			&& y >= LOWER_ZMI_MIN_Y && y <= LOWER_ZMI_MAX_Y;
+	}
+
+	private boolean isInZmiArea()
+	{
+		return isInUpperZmiArea() || isInLowerZmiArea();
 	}
 
 	boolean isAltarVisibleOnSamePlane()
