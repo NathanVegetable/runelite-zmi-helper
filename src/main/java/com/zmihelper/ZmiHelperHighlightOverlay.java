@@ -153,7 +153,7 @@ class ZmiHelperHighlightOverlay extends Overlay
 			(float) Duration.between(startOfLastTick, Instant.now()).toMillis() / PULSE_TIME,
 			1f);
 		double t = tickProgress * Math.PI;
-		Color baseColor = config.highlightColor();
+		Color baseColor = config.spellHighlightColor();
 		return ColorUtil.colorLerp(baseColor, darkenColor(baseColor), Math.sin(t));
 	}
 

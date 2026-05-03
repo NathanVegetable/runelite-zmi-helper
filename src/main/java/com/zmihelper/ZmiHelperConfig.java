@@ -13,7 +13,7 @@ import net.runelite.client.config.Range;
 public interface ZmiHelperConfig extends Config
 {
 	@ConfigSection(
-		name = "Pouch Tracking",
+		name = "Rune Pouch",
 		description = "Settings for pouch charge reminders",
 		position = 0
 	)
@@ -21,9 +21,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "enablePouchTextReminder",
-		name = "Enable Pouch Text Reminder",
-		description = "Show on-screen text reminder when pouch is at 1 charge",
-		section = "pouch"
+		name = "Interface Reminder",
+		description = "Show on-screen reminder when pouch needs repair",
+		section = "pouch",
+		position = 0
 	)
 	default boolean enablePouchTextReminder()
 	{
@@ -32,9 +33,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "flashPouchReminder",
-		name = "Flash Pouch Reminder",
-		description = "Flash the text reminder on screen",
-		section = "pouch"
+		name = "Flash Interface",
+		description = "Flash the reminder on screen",
+		section = "pouch",
+		position = 1
 	)
 	default boolean flashPouchReminder()
 	{
@@ -43,9 +45,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "pouchNotification",
-		name = "Pouch Notification",
+		name = "Notify",
 		description = "Notification when pouch needs repair",
-		section = "pouch"
+		section = "pouch",
+		position = 2
 	)
 	default Notification pouchNotification()
 	{
@@ -53,39 +56,55 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "pouchRequireAltar",
-		name = "Only Remind At Altar",
-		description = "Only notify when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
-		section = "pouch"
-	)
-	default boolean pouchRequireAltar()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "highlightNpcContact",
-		name = "Highlight NPC Contact Spell & Spellbook Tab",
-		description = "Highlight the NPC Contact spell and spellbook tab if not open",
-		section = "pouch"
+		name = "Highlight Spell",
+		description = "Highlight NPC Contact spell and spellbook tab if not open",
+		section = "pouch",
+		position = 3
 	)
 	default boolean highlightNpcContact()
 	{
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "pouchRequireAltar",
+		name = "Only when nearby altar",
+		description = "Only remind when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
+		section = "pouch",
+		position = 4
+	)
+	default boolean pouchRequireAltar()
+	{
+		return true;
+	}
+
 	@ConfigSection(
-		name = "Run Energy Tracking",
+		name = "Run Energy",
 		description = "Settings for run energy reminders",
 		position = 1
 	)
 	String runEnergySection = "runenergy";
 
+	@Range(min = 0, max = 100)
+	@ConfigItem(
+		keyName = "runEnergyThreshold",
+		name = "Threshold",
+		description = "Show reminder when energy drops below this (0 to disable)",
+		section = "runenergy",
+		position = 0
+	)
+	default int runEnergyThreshold()
+	{
+		return 25;
+	}
+
 	@ConfigItem(
 		keyName = "enableRunEnergyTextReminder",
-		name = "Enable Run Energy Text Reminder",
-		description = "Show on-screen text reminder when run energy is below threshold",
-		section = "runenergy"
+		name = "Interface Reminder",
+		description = "Show on-screen reminder when energy is below threshold",
+		section = "runenergy",
+		position = 1
 	)
 	default boolean enableRunEnergyTextReminder()
 	{
@@ -94,9 +113,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "flashRunEnergyReminder",
-		name = "Flash Run Energy Reminder",
-		description = "Flash the text reminder on screen",
-		section = "runenergy"
+		name = "Flash Interface",
+		description = "Flash the reminder on screen",
+		section = "runenergy",
+		position = 2
 	)
 	default boolean flashRunEnergyReminder()
 	{
@@ -105,73 +125,54 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "runEnergyNotification",
-		name = "Run Energy Notification",
-		description = "Notification when run energy is below threshold",
-		section = "runenergy"
+		name = "Notify",
+		description = "Notification when energy is below threshold",
+		section = "runenergy",
+		position = 3
 	)
 	default Notification runEnergyNotification()
 	{
 		return Notification.ON;
 	}
 
-	@Range(min = 0, max = 100)
-	@ConfigItem(
-		keyName = "runEnergyThreshold",
-		name = "Run Energy Threshold",
-		description = "Show reminder when run energy drops below this (0 to disable)",
-		section = "runenergy"
-	)
-	default int runEnergyThreshold()
-	{
-		return 20;
-	}
-
-	@ConfigItem(
-		keyName = "runEnergyRequireAltar",
-		name = "Only Remind At Altar",
-		description = "Only notify when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
-		section = "runenergy"
-	)
-	default boolean runEnergyRequireAltar()
-	{
-		return true;
-	}
-
 	@ConfigItem(
 		keyName = "highlightRunEnergySpell",
-		name = "Highlight Run Energy Spell & Spellbook Tab",
+		name = "Highlight Spell",
 		description = "Highlight the relevant spell (Spellbook Swap or Vile Vigour) and spellbook tab if not open",
-		section = "runenergy"
+		section = "runenergy",
+		position = 4
 	)
 	default boolean highlightRunEnergySpell()
 	{
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "runEnergyRequireAltar",
+		name = "Only when nearby altar",
+		description = "Only remind when you're at the Chaos altar. Disable to get reminders anywhere in ZMI",
+		section = "runenergy",
+		position = 5
+	)
+	default boolean runEnergyRequireAltar()
+	{
+		return true;
+	}
+
 	@ConfigSection(
-		name = "Prayer Altar Tracking",
+		name = "Prayer Altar",
 		description = "Settings for Chaos altar highlighting",
 		position = 2
 	)
 	String prayerSection = "prayer";
 
-	@ConfigItem(
-		keyName = "highlightAltarLowPrayer",
-		name = "Highlight Altar When Prayer Low",
-		description = "Highlight Chaos altar when prayer drops below threshold",
-		section = "prayer"
-	)
-	default boolean highlightAltarLowPrayer()
-	{
-		return true;
-	}
-
 	@Range(min = 0, max = 99)
 	@ConfigItem(
 		keyName = "prayerThreshold",
-		name = "Prayer Threshold",
+		name = "Highlight Low Prayer",
 		description = "Highlight altar when prayer is below this (0 to disable)",
-		section = "prayer"
+		section = "prayer",
+		position = 0
 	)
 	default int prayerThreshold()
 	{
@@ -180,9 +181,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightAltarLowRunEnergy",
-		name = "Highlight Altar When Run Energy Low",
-		description = "Highlight Chaos altar when about to restore run energy (which drains prayer)",
-		section = "prayer"
+		name = "Highlight Low Energy",
+		description = "Highlight Chaos altar when about to restore run energy with Vile Vigour (which drains prayer)",
+		section = "prayer",
+		position = 1
 	)
 	default boolean highlightAltarLowRunEnergy()
 	{
@@ -190,7 +192,7 @@ public interface ZmiHelperConfig extends Config
 	}
 
 	@ConfigSection(
-		name = "Runecrafting Teleport",
+		name = "Ourania Teleport",
 		description = "Settings for Ourania Teleport highlighting",
 		position = 3
 	)
@@ -198,9 +200,10 @@ public interface ZmiHelperConfig extends Config
 
 	@ConfigItem(
 		keyName = "highlightOuraniaTeleport",
-		name = "Highlight Ourania Teleport",
+		name = "Highlight Spell",
 		description = "Highlight Ourania Teleport spell and spellbook tab when ready to leave",
-		section = "teleport"
+		section = "teleport",
+		position = 0
 	)
 	default boolean highlightOuraniaTeleport()
 	{
@@ -216,12 +219,26 @@ public interface ZmiHelperConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		keyName = "highlightColor",
-		name = "Spell & Altar Highlight Color",
-		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour, Ourania Teleport) and Chaos altar",
-		section = "highlight"
+		keyName = "spellHighlightColor",
+		name = "Spell",
+		description = "Color for spell highlights (NPC Contact, Spellbook Swap, Vile Vigour, Ourania Teleport)",
+		section = "highlight",
+		position = 0
 	)
-	default Color highlightColor()
+	default Color spellHighlightColor()
+	{
+		return new Color(0, 255, 0, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "prayerAltarHighlightColor",
+		name = "Prayer Altar",
+		description = "Color for Chaos altar highlight",
+		section = "highlight",
+		position = 1
+	)
+	default Color prayerAltarHighlightColor()
 	{
 		return new Color(0, 255, 0, 255);
 	}

@@ -40,8 +40,7 @@ class ZmiHelperAltarOverlay extends Overlay
 
 		boolean shouldHighlight = false;
 
-		if (config.highlightAltarLowPrayer() && config.prayerThreshold() > 0
-			&& plugin.currentPrayer < config.prayerThreshold())
+		if (config.prayerThreshold() > 0 && plugin.currentPrayer < config.prayerThreshold())
 		{
 			shouldHighlight = true;
 		}
@@ -69,7 +68,7 @@ class ZmiHelperAltarOverlay extends Overlay
 			return;
 		}
 
-		Color borderColor = config.highlightColor();
+		Color borderColor = config.prayerAltarHighlightColor();
 		Color fillColor = new Color(borderColor.getRed(), borderColor.getGreen(), borderColor.getBlue(), 50);
 		Stroke stroke = new BasicStroke(2);
 
