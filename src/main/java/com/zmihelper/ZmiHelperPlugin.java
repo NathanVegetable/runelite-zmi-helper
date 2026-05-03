@@ -69,6 +69,7 @@ public class ZmiHelperPlugin extends Plugin
 	private boolean lastPrayerState;
 	private boolean loginFlag = false;
 	private boolean lastAltarVisible = true;
+	private int cachedPlayerPlane = -1;
 
 	private static final int CHAOS_ALTAR_ID = 34571;
 
@@ -118,6 +119,12 @@ public class ZmiHelperPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		highlightOverlay.onTick();
+
+		// Cache player plane for this tick
+		if (client.getLocalPlayer() != null)
+		{
+			cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
+		}
 
 		currentRunEnergy = client.getEnergy();
 
@@ -320,9 +327,19 @@ public class ZmiHelperPlugin extends Plugin
 
 	boolean isAltarVisibleOnSamePlane()
 	{
-		return chaosAltar != null &&
-			client.getLocalPlayer() != null &&
-			client.getLocalPlayer().getWorldLocation().getPlane() == chaosAltar.getWorldLocation().getPlane();
+		if (chaosAltar == null)
+		{
+			return false;
+		}
+
+		// Use cached player plane if available, otherwise look it up
+		int playerPlane = cachedPlayerPlane;
+		if (playerPlane == -1 && client.getLocalPlayer() != null)
+		{
+			playerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
+		}
+
+		return playerPlane == chaosAltar.getWorldLocation().getPlane();
 	}
 
 	@Provides
