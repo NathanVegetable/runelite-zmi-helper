@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.Stroke;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.client.ui.overlay.Overlay;
@@ -15,7 +14,6 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-@Slf4j
 class ZmiHelperAltarOverlay extends Overlay
 {
 	private final Client client;
@@ -58,7 +56,6 @@ class ZmiHelperAltarOverlay extends Overlay
 			return null;
 		}
 
-		log.info("Highlighting altar - prayer: {}, runEnergy: {}", plugin.currentPrayer, plugin.currentRunEnergy);
 		renderAltarHull(graphics, plugin.chaosAltar);
 
 		return null;

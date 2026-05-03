@@ -119,6 +119,10 @@ public class ZmiHelperPlugin extends Plugin
 		if (client.getLocalPlayer() != null)
 		{
 			cachedPlayerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
+			int x = client.getLocalPlayer().getWorldLocation().getX();
+			int y = client.getLocalPlayer().getWorldLocation().getY();
+			int region = client.getLocalPlayer().getWorldLocation().getRegionID();
+			log.info("ZMI: x={}, y={}, region={}, plane={}", x, y, region, cachedPlayerPlane);
 		}
 
 		currentRunEnergy = client.getEnergy();
@@ -340,14 +344,7 @@ public class ZmiHelperPlugin extends Plugin
 			playerPlane = client.getLocalPlayer().getWorldLocation().getPlane();
 		}
 
-		int altarPlane = chaosAltar.getWorldLocation().getPlane();
-		boolean sameplane = playerPlane == altarPlane;
-		if (!sameplane)
-		{
-			log.info("Plane mismatch: player={}, altar={}", playerPlane, altarPlane);
-		}
-
-		return sameplane;
+		return playerPlane == chaosAltar.getWorldLocation().getPlane();
 	}
 
 	@Provides
