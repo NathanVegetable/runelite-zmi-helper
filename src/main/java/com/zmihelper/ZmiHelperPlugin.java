@@ -16,7 +16,6 @@ import net.runelite.api.Skill;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
@@ -150,6 +149,9 @@ public class ZmiHelperPlugin extends Plugin
 
 		currentRunEnergy = client.getEnergy();
 
+		// Check pouch state every tick rather than on ItemContainerChanged events,
+		// since NPC Contact repairs update the pouch's degradation state without
+		// necessarily triggering a container change event
 		checkPouchState();
 
 		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
@@ -205,17 +207,6 @@ public class ZmiHelperPlugin extends Plugin
 		lastAltarVisible = altarCurrentlyVisible;
 
 		suppressNextNotifications = false;
-	}
-
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
-	{
-		if (!isInZmiArea() || event.getContainerId() != InventoryID.INV)
-		{
-			return;
-		}
-
-		checkPouchState();
 	}
 
 	private void checkPouchState()
