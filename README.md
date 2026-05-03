@@ -1,12 +1,10 @@
 # ZMI Helper
 
-A RuneLite plugin for efficient Ourania Altar (ZMI) runecrafting. Provides reminders and highlights for pouch maintenance, run energy management, and prayer restoration.
+A RuneLite plugin for Ourania Altar (ZMI) runecrafting. Reduces mental load with timely reminders and highlights for the core runecrafting loop.
 
 ## Features
 
-- **Pouch charge tracking** - Warns when any essence pouch has 1 fill remaining before next degradation or is already degraded
-- **Run energy reminders** - Alerts when run energy drops below threshold with spell suggestions (Spellbook Swap or Vile Vigour)
-- **Prayer altar highlighting** - Highlights Chaos altar when prayer is low or when about to drain it via Vile Vigour
-- **Spell highlights** - Highlights relevant spells when reminders are active
-- **Spellbook tab highlighting** - Shows magic tab icon when spellbook is not open
-- **Configurable notifications** - Choose how you want to be notified (tray, game message, sound, flash)
+- **Pouch charge tracking** - Text reminder and notification when any pouch has 1 fill remaining before degradation
+- **Run energy management** - Spell highlight and low-energy reminder when energy drops below threshold
+- **Prayer altar highlighting** - Highlights Chaos altar when prayer is low
+- **Ourania Teleport highlight** - Highlights spell and spellbook tab when inventory and pouches are empty (ready to leave)
