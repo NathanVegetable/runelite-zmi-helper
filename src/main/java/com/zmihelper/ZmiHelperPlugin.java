@@ -150,6 +150,8 @@ public class ZmiHelperPlugin extends Plugin
 
 		currentRunEnergy = client.getEnergy();
 
+		checkPouchState();
+
 		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
 		boolean altarJustArrived = !lastAltarVisible && altarCurrentlyVisible;
 
