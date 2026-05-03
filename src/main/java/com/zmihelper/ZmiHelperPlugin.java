@@ -368,6 +368,11 @@ public class ZmiHelperPlugin extends Plugin
 
 	private boolean isInUpperZmiArea()
 	{
+		if (client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 		if (region != UPPER_ZMI_REGION)
 		{
@@ -383,6 +388,11 @@ public class ZmiHelperPlugin extends Plugin
 
 	private boolean isInLowerZmiArea()
 	{
+		if (client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
 		int region = client.getLocalPlayer().getWorldLocation().getRegionID();
 		if (region != LOWER_ZMI_REGION)
 		{
