@@ -33,14 +33,7 @@ class ZmiHelperAltarOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.chaosAltar == null)
-		{
-			return null;
-		}
-
-		// Only highlight if on the same plane
-		if (client.getLocalPlayer() == null ||
-			client.getLocalPlayer().getWorldLocation().getPlane() != plugin.chaosAltar.getWorldLocation().getPlane())
+		if (!plugin.isAltarVisibleOnSamePlane())
 		{
 			return null;
 		}

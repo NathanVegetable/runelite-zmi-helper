@@ -144,9 +144,7 @@ public class ZmiHelperPlugin extends Plugin
 		}
 
 		// Check if altar just became visible and notify if conditions are met
-		boolean altarCurrentlyVisible = chaosAltar != null &&
-			client.getLocalPlayer() != null &&
-			client.getLocalPlayer().getWorldLocation().getPlane() == chaosAltar.getWorldLocation().getPlane();
+		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
 
 		if (!lastAltarVisible && altarCurrentlyVisible && !loginFlag)
 		{
@@ -318,6 +316,13 @@ public class ZmiHelperPlugin extends Plugin
 		{
 			chaosAltar = null;
 		}
+	}
+
+	boolean isAltarVisibleOnSamePlane()
+	{
+		return chaosAltar != null &&
+			client.getLocalPlayer() != null &&
+			client.getLocalPlayer().getWorldLocation().getPlane() == chaosAltar.getWorldLocation().getPlane();
 	}
 
 	@Provides
