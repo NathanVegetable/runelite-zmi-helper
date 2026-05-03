@@ -96,19 +96,12 @@ class ZmiHelperHighlightOverlay extends Overlay
 	private void highlightSpell(Graphics2D graphics, int spellWidgetId)
 	{
 		Widget spell = client.getWidget(spellWidgetId);
-		if (spell == null)
+		if (spell == null || spell.isHidden())
 		{
-			log.debug("Spell widget is null for ID: " + spellWidgetId);
-			return;
-		}
-		if (spell.isHidden())
-		{
-			log.debug("Spell widget is hidden for ID: " + spellWidgetId);
 			return;
 		}
 
 		Rectangle bounds = spell.getBounds();
-		log.debug("Highlighting spell with bounds: " + bounds);
 		Color color = getPulseColor();
 		graphics.setColor(color);
 		graphics.setStroke(new BasicStroke(2));

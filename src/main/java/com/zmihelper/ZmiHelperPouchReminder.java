@@ -34,7 +34,7 @@ class ZmiHelperPouchReminder extends OverlayPanel
 		panelComponent.getChildren().clear();
 
 		String text = "Repair pouches — NPC Contact";
-		Color color = getTextColor(config.flashPouchReminder());
+		Color color = ZmiHelperColors.getReminderColor(client, config.flashPouchReminder());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)
 			.leftColor(color)
@@ -42,23 +42,5 @@ class ZmiHelperPouchReminder extends OverlayPanel
 
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		return panelComponent.render(graphics);
-	}
-
-	private Color getTextColor(boolean flashEnabled)
-	{
-		if (!flashEnabled)
-		{
-			return new Color(255, 255, 0);
-		}
-
-		boolean shouldFlash = (client.getGameCycle() % 40) < 20;
-		if (shouldFlash)
-		{
-			return new Color(255, 255, 0);
-		}
-		else
-		{
-			return new Color(145, 145, 0);
-		}
 	}
 }

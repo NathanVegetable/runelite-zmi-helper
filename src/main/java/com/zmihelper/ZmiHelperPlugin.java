@@ -64,14 +64,12 @@ public class ZmiHelperPlugin extends Plugin
 	boolean runEnergyLow = false;
 	GameObject chaosAltar = null;
 
-	private boolean lastPouchState;
-	private boolean lastRunEnergyState;
-	private boolean lastPrayerState;
-	private boolean loginFlag = false;
+	private boolean pouchNotificationSent;
+	private boolean runEnergyNotificationSent;
+	private boolean prayerLowTracked;
+	private boolean suppressNextNotifications = false;
 	private boolean lastAltarVisible = true;
 	private int cachedPlayerPlane = -1;
-
-	private static final int CHAOS_ALTAR_ID = 34571;
 
 	@Override
 	protected void startUp() throws Exception
@@ -83,7 +81,7 @@ public class ZmiHelperPlugin extends Plugin
 
 		if (client.getGameState() == net.runelite.api.GameState.LOGGED_IN)
 		{
-			loginFlag = true;
+			suppressNextNotifications = true;
 		}
 
 		log.debug("ZMI Helper started!");
@@ -107,10 +105,8 @@ public class ZmiHelperPlugin extends Plugin
 			case LOGGING_IN:
 			case HOPPING:
 			case CONNECTION_LOST:
-				loginFlag = true;
-				break;
 			case LOGGED_IN:
-				loginFlag = true;
+				suppressNextNotifications = true;
 				break;
 		}
 	}
@@ -133,40 +129,40 @@ public class ZmiHelperPlugin extends Plugin
 			boolean shouldAlert = currentRunEnergy < threshold;
 			runEnergyLow = shouldAlert;
 
-			if (shouldAlert && !lastRunEnergyState && !loginFlag)
+			if (shouldAlert && !runEnergyNotificationSent && !suppressNextNotifications)
 			{
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
-				lastRunEnergyState = true;
+				runEnergyNotificationSent = true;
 			}
 			else if (!shouldAlert)
 			{
-				lastRunEnergyState = false;
+				runEnergyNotificationSent = false;
 			}
 		}
 		else
 		{
 			runEnergyLow = false;
-			lastRunEnergyState = false;
+			runEnergyNotificationSent = false;
 		}
 
 		boolean altarCurrentlyVisible = isAltarVisibleOnSamePlane();
 
-		if (!lastAltarVisible && altarCurrentlyVisible && !loginFlag)
+		if (!lastAltarVisible && altarCurrentlyVisible && !suppressNextNotifications)
 		{
-			if (pouchNeedsRepair && !lastPouchState)
+			if (pouchNeedsRepair && !pouchNotificationSent)
 			{
 				notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-				lastPouchState = true;
+				pouchNotificationSent = true;
 			}
-			if (runEnergyLow && !lastRunEnergyState)
+			if (runEnergyLow && !runEnergyNotificationSent)
 			{
 				notifier.notify(config.runEnergyNotification(), "Run energy low - cast Vile Vigour");
-				lastRunEnergyState = true;
+				runEnergyNotificationSent = true;
 			}
 		}
 		lastAltarVisible = altarCurrentlyVisible;
 
-		loginFlag = false;
+		suppressNextNotifications = false;
 	}
 
 	@Subscribe
@@ -207,20 +203,17 @@ public class ZmiHelperPlugin extends Plugin
 
 			if (isDegraded || isAt1Charge)
 			{
-				if (!lastPouchState && !loginFlag)
+				if (!pouchNotificationSent && !suppressNextNotifications)
 				{
 					notifier.notify(config.pouchNotification(), "Pouch needs repair — cast NPC Contact!");
-					lastPouchState = true;
+					pouchNotificationSent = true;
 				}
 				pouchNeedsRepair = true;
 				return;
 			}
 		}
 
-		if (lastPouchState)
-		{
-			lastPouchState = false;
-		}
+		pouchNotificationSent = false;
 		pouchNeedsRepair = false;
 	}
 
@@ -283,13 +276,13 @@ public class ZmiHelperPlugin extends Plugin
 			{
 				boolean shouldAlert = currentPrayer < config.prayerThreshold();
 
-				if (shouldAlert && !lastPrayerState)
+				if (shouldAlert && !prayerLowTracked)
 				{
-					lastPrayerState = true;
+					prayerLowTracked = true;
 				}
-				else if (!shouldAlert && lastPrayerState)
+				else if (!shouldAlert && prayerLowTracked)
 				{
-					lastPrayerState = false;
+					prayerLowTracked = false;
 				}
 			}
 		}

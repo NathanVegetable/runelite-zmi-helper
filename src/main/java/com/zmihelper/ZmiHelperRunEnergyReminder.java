@@ -42,7 +42,7 @@ class ZmiHelperRunEnergyReminder extends OverlayPanel
 		int spellbook = client.getVarbitValue(VarbitID.SPELLBOOK);
 		String spellName = spellbook == 2 ? "Spellbook Swap" : "Vile Vigour";
 		String text = "Low run energy — " + spellName;
-		Color color = getTextColor(config.flashRunEnergyReminder());
+		Color color = ZmiHelperColors.getReminderColor(client, config.flashRunEnergyReminder());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left(text)
 			.leftColor(color)
@@ -50,23 +50,5 @@ class ZmiHelperRunEnergyReminder extends OverlayPanel
 
 		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
 		return panelComponent.render(graphics);
-	}
-
-	private Color getTextColor(boolean flashEnabled)
-	{
-		if (!flashEnabled)
-		{
-			return new Color(255, 255, 0);
-		}
-
-		boolean shouldFlash = (client.getGameCycle() % 40) < 20;
-		if (shouldFlash)
-		{
-			return new Color(255, 255, 0);
-		}
-		else
-		{
-			return new Color(145, 145, 0);
-		}
 	}
 }
